@@ -1,0 +1,13 @@
+{
+    "require": {
+        "php": "^7.0",
+        "symfony/console": "^4.1",
+        "ext-json": "*",
+        "symfony/process": "^4.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "ControlAltDelete\\Shorty\\": "./src/"
+        }
+    }
+}
