@@ -2,8 +2,8 @@
     "name": "michielgerritsen/shorty",
     "require": {
         "php": "^7.0",
-        "symfony/console": "^4.1",
         "ext-json": "*",
+        "symfony/console": "^3.0 || ^4.0",
         "symfony/process": "^4.1"
     },
     "autoload": {
