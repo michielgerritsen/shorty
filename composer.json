@@ -10,5 +10,8 @@
         "psr-4": {
             "ControlAltDelete\\Shorty\\": "./src/"
         }
-    }
+    },
+    "bin": [
+        "shorty"
+    ]
 }
