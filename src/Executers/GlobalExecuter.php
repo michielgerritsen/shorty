@@ -47,7 +47,13 @@ class GlobalExecuter implements ExecuterInterface
             throw new \Exception('Command not found in the current path.');
         }
 
-        $process = new Process('./' . $config['command']);
+        $command = $config['command'];
+        if (count($_SERVER['argv']) > 1) {
+            array_shift($_SERVER['argv']);
+            $command .= ' ' . implode(' ', $_SERVER['argv']);
+        }
+
+        $process = new Process('./' . $command);
         $process->setWorkingDirectory($path);
         $process->setTty(true);
         $process->run(function ($type, $buffer) {
