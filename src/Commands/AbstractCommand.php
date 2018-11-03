@@ -22,11 +22,9 @@ use ControlAltDelete\Shorty\Contracts\StorageInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
 
-class Add extends Command
+class AbstractCommand extends Command
 {
     /**
      * @var InputInterface
@@ -37,10 +35,16 @@ class Add extends Command
      * @var OutputInterface
      */
     protected $output;
+
     /**
      * @var StorageInterface
      */
     private $storage;
+
+    /**
+     * @var string
+     */
+    protected $type = '';
 
     public function __construct(
         StorageInterface $storage,
@@ -53,8 +57,6 @@ class Add extends Command
 
     protected function configure()
     {
-        $this->setName('add');
-
         $this->addArgument('name', InputArgument::REQUIRED, 'Which file should be the base for this command?');
         $this->addArgument('execute', InputArgument::REQUIRED, 'Which command should be shortied?');
     }
@@ -69,20 +71,21 @@ class Add extends Command
         }
 
         $name = $input->getArgument('name');
-//        if ($this->storage->has($name)) {
-//            $this->output->writeln('<info>The command ' . $name . ' already exists</info>');
-//            return;
-//        }
+        if ($this->storage->has($name)) {
+            $this->output->writeln('<info>The command ' . $name . ' already exists</info>');
+            return;
+        }
 
         $this->storage->set($name, [
             'path' => $this->getPath(),
             'command' => $input->getArgument('execute'),
+            'type' => $this->type,
         ]);
 
         $target = $_SERVER['HOME'] . '/.composer/vendor/bin/' . $name;
         if (!is_link($target)) {
             symlink(
-                __DIR__ . '/../BaseCommand.php',
+                __DIR__ . '/../' . ucfirst($this->type) . 'Command.php',
                 $target
             );
         }

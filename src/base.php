@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 /**
  *    ______            __             __
@@ -19,17 +18,14 @@
 
 namespace ControlAltDelete\Shorty;
 
-if (file_exists(__DIR__.'/../../autoload.php')) {
-    require __DIR__.'/../../autoload.php';
-} else {
-    require __DIR__.'/vendor/autoload.php';
+function app() {
+    static $container;
+
+    if (!$container) {
+        $container = new \Illuminate\Container\Container;
+    }
+
+    return $container;
 }
 
-$application = new \Symfony\Component\Console\Application();
-
-$application->addCommands([
-    app()->get(\ControlAltDelete\Shorty\Commands\AddCommand::class),
-    app()->get(\ControlAltDelete\Shorty\Commands\GlobalCommand::class),
-]);
-
-$application->run();
+app()->bind(Contracts\StorageInterface::class, Service\Storage::class);

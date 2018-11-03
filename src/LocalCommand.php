@@ -19,17 +19,10 @@
 
 namespace ControlAltDelete\Shorty;
 
-if (file_exists(__DIR__.'/../../autoload.php')) {
-    require __DIR__.'/../../autoload.php';
-} else {
-    require __DIR__.'/vendor/autoload.php';
-}
+require __DIR__ . '/../vendor/autoload.php';
 
-$application = new \Symfony\Component\Console\Application();
+$name = end(explode('/', $_SERVER['SCRIPT_FILENAME']));
 
-$application->addCommands([
-    app()->get(\ControlAltDelete\Shorty\Commands\AddCommand::class),
-    app()->get(\ControlAltDelete\Shorty\Commands\GlobalCommand::class),
-]);
-
-$application->run();
+$factory = app()->get(ExecuterFactory::class);
+$command = $factory->build('local');
+$command->run($name);

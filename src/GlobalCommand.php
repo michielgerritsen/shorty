@@ -17,23 +17,12 @@
  *
  */
 
-require __DIR__ . '/../vendor/autoload.php';
+namespace ControlAltDelete\Shorty;
 
-$storage = new \ControlAltDelete\Shorty\Service\Storage;
+require __DIR__ . '/../vendor/autoload.php';
 
 $name = end(explode('/', $_SERVER['SCRIPT_FILENAME']));
 
-$config = $storage->get($name);
-
-$command = $config['path'] . '/' . $config['command'];
-
-if (count($argv) > 1) {
-    array_shift($argv);
-    $command .= ' ' . implode(' ', $argv);
-}
-
-$process = new \Symfony\Component\Process\Process($command);
-$process->setTty(true);
-$process->run(function ($type, $buffer) {
-    echo $buffer;
-});
+$factory = app()->get(ExecuterFactory::class);
+$command = $factory->build('global');
+$command->run($name);

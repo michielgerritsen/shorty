@@ -4,12 +4,16 @@
         "php": "^7.0",
         "ext-json": "*",
         "symfony/console": "^3.0 || ^4.0",
-        "symfony/process": "^3.0 || ^4.0"
+        "symfony/process": "^3.0 || ^4.0",
+        "illuminate/container": "^5.7"
     },
     "autoload": {
         "psr-4": {
             "ControlAltDelete\\Shorty\\": "./src/"
-        }
+        },
+        "files": [
+            "src/base.php"
+        ]
     },
     "bin": [
         "shorty"
