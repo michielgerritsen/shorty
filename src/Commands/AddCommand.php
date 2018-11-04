@@ -18,7 +18,7 @@
 
 namespace ControlAltDelete\Shorty\Commands;
 
-class AddCommand extends AbstractCommand
+class AddCommand extends AbstractAddCommand
 {
     /**
      * @var string
