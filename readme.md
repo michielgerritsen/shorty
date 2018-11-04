@@ -20,7 +20,7 @@ And the server will be started. This will work for any Symfony project.
 
 Shorty is meant to be installed global using Composer:
 
-`composer require michielgerritsen/shorty`
+`composer global require michielgerritsen/shorty`
 
 ### Roadmap/Whislist
 
