@@ -23,6 +23,6 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $name = end(explode('/', $_SERVER['SCRIPT_FILENAME']));
 
-$factory = app()->get(ExecuterFactory::class);
+$factory = app()->make(ExecuterFactory::class);
 $command = $factory->build('global');
 $command->run($name);

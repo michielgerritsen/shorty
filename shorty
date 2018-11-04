@@ -28,8 +28,8 @@ if (file_exists(__DIR__.'/../../autoload.php')) {
 $application = new \Symfony\Component\Console\Application();
 
 $application->addCommands([
-    app()->get(\ControlAltDelete\Shorty\Commands\AddCommand::class),
-    app()->get(\ControlAltDelete\Shorty\Commands\GlobalCommand::class),
+    app()->make(\ControlAltDelete\Shorty\Commands\AddCommand::class),
+    app()->make(\ControlAltDelete\Shorty\Commands\GlobalCommand::class),
 ]);
 
 $application->run();

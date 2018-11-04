@@ -38,7 +38,7 @@ class ExecuterFactory
     public function build(string $type): ExecuterInterface
     {
         $name = 'ControlAltDelete\\Shorty\\Executers\\' . ucfirst($type) . 'Executer';
-        $instance = app()->get($name);
+        $instance = app()->make($name);
 
         return $instance;
     }
