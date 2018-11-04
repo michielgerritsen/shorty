@@ -28,6 +28,7 @@ class GlobalCommand extends AbstractCommand
     protected function configure()
     {
         $this->setName('global');
+        $this->setDescription('Add an shortcut for an command that is available in multiple project. Eg artisan, bin/console or bin/magento.');
 
         parent::configure();
     }

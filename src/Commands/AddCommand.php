@@ -28,6 +28,7 @@ class AddCommand extends AbstractCommand
     protected function configure()
     {
         $this->setName('add');
+        $this->setDescription('Add an shortcut for an specific command in the current folder');
 
         parent::configure();
     }
