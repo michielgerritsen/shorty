@@ -30,6 +30,7 @@ $application = new \Symfony\Component\Console\Application();
 $application->addCommands([
     app()->make(\ControlAltDelete\Shorty\Commands\AddCommand::class),
     app()->make(\ControlAltDelete\Shorty\Commands\GlobalCommand::class),
+    app()->make(\ControlAltDelete\Shorty\Commands\DeleteCommand::class),
 ]);
 
 $application->run();

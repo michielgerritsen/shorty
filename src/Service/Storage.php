@@ -35,16 +35,13 @@ class Storage implements StorageInterface
      * @param array $contents
      * @return bool
      */
-    public function set($name, array $contents): bool
+    public function set(string $name, array $contents): bool
     {
         $this->load();
 
         $this->config[$name] = $contents;
 
-        file_put_contents(
-            $this->getPathWithFilename(),
-            json_encode($this->config, JSON_PRETTY_PRINT)
-        );
+        $this->persist();
 
         return true;
     }
@@ -53,7 +50,7 @@ class Storage implements StorageInterface
      * @param $name
      * @return string
      */
-    public function get($name): array
+    public function get(string $name): array
     {
         $this->load();
 
@@ -68,11 +65,24 @@ class Storage implements StorageInterface
      * @param string $name
      * @return bool
      */
-    public function has($name): bool
+    public function has(string $name): bool
     {
         $this->load();
 
         return array_key_exists($name, $this->config);
+    }
+
+    public function delete(string $name): bool
+    {
+        if (!$this->has($name)) {
+            return false;
+        }
+
+        unset($this->config[$name]);
+
+        $this->persist();
+
+        return true;
     }
 
     private function ensureConfigFileExists()
@@ -115,5 +125,13 @@ class Storage implements StorageInterface
     private function getPathWithFilename(): string
     {
         return $this->getPath() . '/' . static::NAME;
+    }
+
+    private function persist()
+    {
+        file_put_contents(
+            $this->getPathWithFilename(),
+            json_encode($this->config, JSON_PRETTY_PRINT)
+        );
     }
 }

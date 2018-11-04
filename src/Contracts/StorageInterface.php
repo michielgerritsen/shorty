@@ -25,17 +25,23 @@ interface StorageInterface
      * @param array $contents
      * @return bool
      */
-    public function set($name, array $contents): bool;
+    public function set(string $name, array $contents): bool;
 
     /**
      * @param $name
      * @return array
      */
-    public function get($name): array;
+    public function get(string $name): array;
 
     /**
      * @param string $name
      * @return bool
      */
-    public function has($name): bool;
+    public function has(string $name): bool;
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function delete(string $name): bool;
 }
