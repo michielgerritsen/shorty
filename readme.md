@@ -6,7 +6,7 @@ Shorty is created to make it easy to create shortcuts to commands. Just run for 
 
 `shorty add symfony bin/console`
 
-Now you have the `symfony` command available globally. When you switch to another folder, the m2 command will still work and be executed in the folder where you added the Shorty command.
+Now you have the `symfony` command available globally. When you switch to another folder, the symfony command will still work and be executed in the folder where you added the Shorty command.
 
 ## Global commands
 
