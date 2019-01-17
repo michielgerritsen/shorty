@@ -35,7 +35,6 @@ Shorty is meant to be installed global using Composer:
 ### Roadmap/Whislist
 
 - tests - tests - tests.
-- Better execution of commands: Laravel's artisan isn't executable in a typical installation.
 - Default configuration for software like Laravel/Symfony/Magento/etc.
 - Add your own suggestion by opening an issue or sending a pull request.
 
