@@ -38,6 +38,7 @@ class GlobalExecuter implements ExecuterInterface
     /**
      * @param string $name
      * @return void
+     * @throws \Exception
      */
     public function run(string $name)
     {
@@ -47,13 +48,18 @@ class GlobalExecuter implements ExecuterInterface
             throw new \Exception('Command not found in the current path.');
         }
 
+        $interpreter = './';
+        if ($config['interpreter']) {
+            $interpreter = $config['interpreter'] . ' ';
+        }
+
         $command = $config['command'];
         if (count($_SERVER['argv']) > 1) {
             array_shift($_SERVER['argv']);
             $command .= ' ' . implode(' ', $_SERVER['argv']);
         }
 
-        $process = new Process('./' . $command);
+        $process = new Process($interpreter . $command);
         $process->setWorkingDirectory($path);
         $process->setTty(true);
         $process->run(function ($type, $buffer) {

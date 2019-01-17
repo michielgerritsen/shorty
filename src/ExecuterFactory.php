@@ -19,22 +19,9 @@
 namespace ControlAltDelete\Shorty;
 
 use ControlAltDelete\Shorty\Contracts\ExecuterInterface;
-use ControlAltDelete\Shorty\Contracts\StorageInterface;
-use ControlAltDelete\Shorty\Executers\LocalExecuter;
 
 class ExecuterFactory
 {
-    /**
-     * @var StorageInterface
-     */
-    private $storage;
-
-    public function __construct(
-        StorageInterface $storage
-    ) {
-        $this->storage = $storage;
-    }
-
     public function build(string $type): ExecuterInterface
     {
         $name = 'ControlAltDelete\\Shorty\\Executers\\' . ucfirst($type) . 'Executer';

@@ -22,6 +22,7 @@ use ControlAltDelete\Shorty\Contracts\StorageInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class AbstractAddCommand extends Command
@@ -59,6 +60,7 @@ class AbstractAddCommand extends Command
     {
         $this->addArgument('name', InputArgument::REQUIRED, 'Which file should be the base for this command?');
         $this->addArgument('execute', InputArgument::REQUIRED, 'Which command should be shortied?');
+        $this->addOption('interpreter', null, InputOption::VALUE_OPTIONAL, 'Which interpreter should be used to execute this command?');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -80,6 +82,7 @@ class AbstractAddCommand extends Command
             'path' => $this->getPath(),
             'command' => $input->getArgument('execute'),
             'type' => $this->type,
+            'interpreter' => $input->getOption('interpreter'),
         ]);
 
         $target = $_SERVER['HOME'] . '/.composer/vendor/bin/' . $name;
