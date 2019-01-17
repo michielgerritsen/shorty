@@ -20,6 +20,12 @@ You can then execute the `symfony` command in any folder within your Symfony pro
 
 And the server will be started. This will work for any Symfony project.
 
+## How to add Laravel's Artisan?
+
+When installing Laravel on the recommended way, the `artisan` file is not executable. This prevents Shorty from running it in the default way. That's why you need to provide it with the interpreter is needs. You can add the `artisan` command to Shorty like this:
+
+`shorty global artisan artisan --interpreter=$(which php)`
+
 ## Installation
 
 Shorty is meant to be installed global using Composer:
