@@ -1,5 +1,6 @@
 {
     "name": "michielgerritsen/shorty",
+    "license": "GPL-3.0-or-later",
     "require": {
         "php": "^7.0",
         "ext-json": "*",
