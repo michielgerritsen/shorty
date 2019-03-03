@@ -16,17 +16,22 @@
  *
  */
 
-namespace ControlAltDelete\Shorty;
+declare(strict_types=1);
 
-function app() {
-    static $container;
+namespace ControlAltDelete\Shorty\Contracts;
 
-    if (!$container) {
-        $container = new \Illuminate\Container\Container;
-    }
+interface SymlinkInterface
+{
+    /**
+     * @param string $name
+     * @param string $type
+     * @return bool
+     */
+    public function create(string $name, string $type): bool;
 
-    return $container;
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function remove(string $name): bool;
 }
-
-app()->bind(Contracts\StorageInterface::class, Service\Storage::class);
-app()->bind(Contracts\SymlinkInterface::class, Service\Symlink::class);

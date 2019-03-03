@@ -19,6 +19,7 @@
 namespace ControlAltDelete\Shorty\Commands;
 
 use ControlAltDelete\Shorty\Contracts\StorageInterface;
+use ControlAltDelete\Shorty\Service\Symlink;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,16 +32,18 @@ class FixCommand extends Command
     private $storage;
 
     /**
-     * @var string
+     * @var Symlink
      */
-    private $path;
+    private $symlink;
 
     public function __construct(
         StorageInterface $storage,
+        Symlink $symlink,
         $name = null
     ) {
         parent::__construct($name);
         $this->storage = $storage;
+        $this->symlink = $symlink;
     }
 
     protected function configure()
@@ -54,37 +57,11 @@ class FixCommand extends Command
         $this->path = $_SERVER['HOME'] . '/.composer/vendor/bin/';
 
         foreach ($this->storage->all() as $name => $content) {
-            $this->removeSymlink($name);
-            $output->writeln('<fg=cyan>Removed the symlink ' . $this->path . $name . '</>');
+            $this->symlink->remove($name);
+            $output->writeln('<fg=cyan>Removed the symlink for ' . $name . '</>');
 
-            $this->addSymlink($name, $content['type']);
-            $output->writeln('<info>Created the symlink ' . $this->path . $name . '</info>');
-        }
-    }
-
-    private function removeSymlink($name)
-    {
-        if (!file_exists($this->path . $name) || !is_writable($this->path . $name)) {
-            return;
-        }
-
-        unlink($this->path . $name);
-        clearstatcache();
-    }
-
-    private function addSymlink($name, $type)
-    {
-        if (!is_writable($this->path)) {
-            throw new \Exception('Unable to create symlink: Path (' . $this->path . $name . ') is not writable');
-        }
-
-        $result = symlink(
-            __DIR__ . '/../' . ucfirst($type) . 'Command.php',
-            $this->path . $name
-        );
-
-        if (!$result) {
-            throw new \Exception('Unable to symlink the path (' . $this->path . $name . ')');
+            $this->symlink->create($name, $content['type']);
+            $output->writeln('<info>Created the symlink for ' . $name . '</info>');
         }
     }
 }

@@ -19,6 +19,7 @@
 namespace ControlAltDelete\Shorty\Commands;
 
 use ControlAltDelete\Shorty\Contracts\StorageInterface;
+use ControlAltDelete\Shorty\Contracts\SymlinkInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,11 +28,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class AbstractAddCommand extends Command
 {
-    /**
-     * @var InputInterface
-     */
-    protected $input;
-
     /**
      * @var OutputInterface
      */
@@ -43,17 +39,24 @@ class AbstractAddCommand extends Command
     private $storage;
 
     /**
+     * @var SymlinkInterface
+     */
+    private $symlink;
+
+    /**
      * @var string
      */
     protected $type = '';
 
     public function __construct(
         StorageInterface $storage,
+        SymlinkInterface $symlink,
         $name = null
     ) {
         parent::__construct($name);
 
         $this->storage = $storage;
+        $this->symlink = $symlink;
     }
 
     protected function configure()
@@ -65,7 +68,6 @@ class AbstractAddCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->input = $input;
         $this->output = $output;
 
         if (!$this->checkDependencies()) {
@@ -74,7 +76,9 @@ class AbstractAddCommand extends Command
 
         $name = $input->getArgument('name');
         if ($this->storage->has($name)) {
-            $this->output->writeln('<info>The command ' . $name . ' already exists</info>');
+            $this->output->writeln(
+                '<error>The command ' . $name . ' already exists. Use `shorty fix` to recreate it</error>'
+            );
             return;
         }
 
@@ -85,13 +89,7 @@ class AbstractAddCommand extends Command
             'interpreter' => $input->getOption('interpreter'),
         ]);
 
-        $target = $_SERVER['HOME'] . '/.composer/vendor/bin/' . $name;
-        if (!is_link($target)) {
-            symlink(
-                __DIR__ . '/../' . ucfirst($this->type) . 'Command.php',
-                $target
-            );
-        }
+        $this->symlink->create($name, $this->type);
 
         $this->output->writeln('<info>Command ' . $name . ' added. Try it out!</info>');
     }

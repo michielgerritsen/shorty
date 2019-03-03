@@ -19,6 +19,7 @@
 namespace ControlAltDelete\Shorty\Commands;
 
 use ControlAltDelete\Shorty\Contracts\StorageInterface;
+use ControlAltDelete\Shorty\Service\Symlink;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,12 +32,19 @@ class DeleteCommand extends Command
      */
     private $storage;
 
+    /**
+     * @var Symlink
+     */
+    private $symlink;
+
     public function __construct(
         StorageInterface $storage,
+        Symlink $symlink,
         $name = null
     ) {
         parent::__construct($name);
         $this->storage = $storage;
+        $this->symlink = $symlink;
     }
 
     public function configure()
@@ -52,11 +60,7 @@ class DeleteCommand extends Command
         $name = $input->getArgument('name');
 
         $this->storage->delete($name);
-
-        $target = $_SERVER['HOME'] . '/.composer/vendor/bin/' . $name;
-        if (file_exists($target)) {
-            unlink($target);
-        }
+        $this->symlink->remove($name);
 
         $output->writeln('<info>the [' . $name . '] shortcut is succesfully removed</info>');
     }
