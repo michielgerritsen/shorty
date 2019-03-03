@@ -44,4 +44,9 @@ interface StorageInterface
      * @return bool
      */
     public function delete(string $name): bool;
+
+    /**
+     * @return array
+     */
+    public function all(): array;
 }

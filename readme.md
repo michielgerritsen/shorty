@@ -32,6 +32,14 @@ Shorty is meant to be installed global using Composer:
 
 `composer global require michielgerritsen/shorty`
 
+## The fix command
+
+Sometimes you mess up your global Composer folder and the commands won't work anymore. You can use the `fix` command to remove and reinstall all commands.
+
+```
+shorty fix
+```
+
 ### Roadmap/Whislist
 
 - tests - tests - tests.

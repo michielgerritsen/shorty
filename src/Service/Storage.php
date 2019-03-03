@@ -72,6 +72,10 @@ class Storage implements StorageInterface
         return array_key_exists($name, $this->config);
     }
 
+    /**
+     * @param string $name
+     * @return bool
+     */
     public function delete(string $name): bool
     {
         if (!$this->has($name)) {
@@ -83,6 +87,16 @@ class Storage implements StorageInterface
         $this->persist();
 
         return true;
+    }
+
+    /**
+     * @return array
+     */
+    public function all(): array
+    {
+        $this->load();
+
+        return $this->config;
     }
 
     private function ensureConfigFileExists()
