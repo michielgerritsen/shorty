@@ -23,4 +23,5 @@ class Dictionary
     const COMMAND_ADDED = 'Command %s added. Try it out!';
     const COMMAND_ALREADY_EXISTS = 'The command %s already exists. Use `shorty fix` to recreate it';
     const COMPOSER_NOT_FOUND = 'The .composer/vendor/bin bin is not in your $PATH. Please add it.';
+    const COMMAND_REMOVED = 'The [%s] shortcut is succesfully removed';
 }

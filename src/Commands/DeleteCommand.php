@@ -19,6 +19,7 @@
 namespace ControlAltDelete\Shorty\Commands;
 
 use ControlAltDelete\Shorty\Contracts\StorageInterface;
+use ControlAltDelete\Shorty\Dictionary;
 use ControlAltDelete\Shorty\Service\Symlink;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -62,6 +63,6 @@ class DeleteCommand extends Command
         $this->storage->delete($name);
         $this->symlink->remove($name);
 
-        $output->writeln('<info>the [' . $name . '] shortcut is succesfully removed</info>');
+        $output->writeln('<info>' . sprintf(Dictionary::COMMAND_REMOVED, $name) . '</info>');
     }
 }
