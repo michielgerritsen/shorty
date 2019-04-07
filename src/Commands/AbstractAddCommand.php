@@ -20,6 +20,8 @@ namespace ControlAltDelete\Shorty\Commands;
 
 use ControlAltDelete\Shorty\Contracts\StorageInterface;
 use ControlAltDelete\Shorty\Contracts\SymlinkInterface;
+use ControlAltDelete\Shorty\Dictionary;
+use ControlAltDelete\Shorty\Service\Dependencies;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,11 +46,17 @@ class AbstractAddCommand extends Command
     private $symlink;
 
     /**
+     * @var Dependencies
+     */
+    private $dependencies;
+
+    /**
      * @var string
      */
     protected $type = '';
 
     public function __construct(
+        Dependencies $dependencies,
         StorageInterface $storage,
         SymlinkInterface $symlink,
         $name = null
@@ -57,6 +65,7 @@ class AbstractAddCommand extends Command
 
         $this->storage = $storage;
         $this->symlink = $symlink;
+        $this->dependencies = $dependencies;
     }
 
     protected function configure()
@@ -70,14 +79,15 @@ class AbstractAddCommand extends Command
     {
         $this->output = $output;
 
-        if (!$this->checkDependencies()) {
+        if (!$this->dependencies->check()) {
+            $this->output->writeln('<error>' . Dictionary::COMPOSER_NOT_FOUND . '</error>');
             return;
         }
 
         $name = $input->getArgument('name');
         if ($this->storage->has($name)) {
             $this->output->writeln(
-                '<error>The command ' . $name . ' already exists. Use `shorty fix` to recreate it</error>'
+                '<error>' . sprintf(Dictionary::COMMAND_ALREADY_EXISTS, $name) . '</error>'
             );
             return;
         }
@@ -91,26 +101,11 @@ class AbstractAddCommand extends Command
 
         $this->symlink->create($name, $this->type);
 
-        $this->output->writeln('<info>Command ' . $name . ' added. Try it out!</info>');
+        $this->output->writeln('<info>' . sprintf(Dictionary::COMMAND_ADDED, $name) . '</info>');
     }
 
     private function getPath()
     {
         return getcwd();
-    }
-
-    private function checkDependencies()
-    {
-        $path = $_SERVER['PATH'];
-        $parts = array_filter(explode(':', $path), function ($part) {
-            return strpos($part, '.composer/vendor/bin') !== false;
-        });
-
-        if (empty($parts)) {
-            $this->output->writeln('<error>The .composer/vendor/bin bin is not in your $PATH. Please add it.</error>');
-            return false;
-        }
-
-        return true;
     }
 }
