@@ -48,7 +48,7 @@ class Storage implements StorageInterface
 
     /**
      * @param $name
-     * @return string
+     * @return array
      */
     public function get(string $name): array
     {
@@ -101,7 +101,7 @@ class Storage implements StorageInterface
 
     private function ensureConfigFileExists()
     {
-        $path = $this->getPath() . '/' . static::NAME;
+        $path = $this->getPathWithFilename();
         if (file_exists($path)) {
             return;
         }
