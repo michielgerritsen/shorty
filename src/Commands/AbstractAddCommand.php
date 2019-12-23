@@ -71,7 +71,7 @@ class AbstractAddCommand extends Command
     protected function configure()
     {
         $this->addArgument('name', InputArgument::REQUIRED, 'Which file should be the base for this command?');
-        $this->addArgument('execute', InputArgument::REQUIRED, 'Which command should be shortied?');
+        $this->addArgument('execute', InputArgument::REQUIRED, 'Which command should be shortend?');
         $this->addOption('interpreter', null, InputOption::VALUE_OPTIONAL, 'Which interpreter should be used to execute this command?');
     }
 
